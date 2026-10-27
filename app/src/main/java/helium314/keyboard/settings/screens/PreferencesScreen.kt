@@ -57,6 +57,9 @@ fun PreferencesScreen(
             Settings.PREF_VIBRATION_DURATION_SETTINGS else null,
         if (prefs.getBoolean(Settings.PREF_VIBRATE_ON, Defaults.PREF_VIBRATE_ON))
             Settings.PREF_VIBRATE_IN_DND_MODE else null,
+        if (prefs.getBoolean(Settings.PREF_VIBRATE_ON, Defaults.PREF_VIBRATE_ON)
+                && AudioAndHapticFeedbackManager.getInstance().supportsCrispHaptics())
+            Settings.PREF_CRISP_HAPTICS else null,
         Settings.PREF_SOUND_ON,
         if (prefs.getBoolean(Settings.PREF_SOUND_ON, Defaults.PREF_SOUND_ON))
             Settings.PREF_KEYPRESS_SOUND_VOLUME else null,
@@ -121,6 +124,9 @@ fun createPreferencesSettings(context: Context) = listOf(
     },
     Setting(context, Settings.PREF_VIBRATE_IN_DND_MODE, R.string.vibrate_in_dnd_mode) {
         SwitchPreference(it, Defaults.PREF_VIBRATE_IN_DND_MODE)
+    },
+    Setting(context, Settings.PREF_CRISP_HAPTICS, R.string.crisp_haptics, R.string.crisp_haptics_summary) {
+        SwitchPreference(it, Defaults.PREF_CRISP_HAPTICS)
     },
     Setting(context, Settings.PREF_SOUND_ON, R.string.sound_on_keypress) {
         SwitchPreference(it, Defaults.PREF_SOUND_ON)

@@ -58,6 +58,8 @@ public class SettingsValues {
     // From preferences
     public final boolean mAutoCap;
     public final boolean mAdaptiveHitboxes;
+    public final boolean mLearnTouchPositions;
+    public final boolean mCrispHaptics;
     public final boolean mVibrateOn;
     public final boolean mVibrateInDndMode;
     public final boolean mSoundOn;
@@ -193,6 +195,8 @@ public class SettingsValues {
         mToolbarHidingGlobal = mIsLocked || prefs.getBoolean(Settings.PREF_TOOLBAR_HIDING_GLOBAL, Defaults.PREF_TOOLBAR_HIDING_GLOBAL);
         mAutoCap = prefs.getBoolean(Settings.PREF_AUTO_CAP, Defaults.PREF_AUTO_CAP) && ScriptUtils.scriptSupportsUppercase(mLocale);
         mAdaptiveHitboxes = prefs.getBoolean(Settings.PREF_ADAPTIVE_HITBOXES, Defaults.PREF_ADAPTIVE_HITBOXES);
+        mLearnTouchPositions = prefs.getBoolean(Settings.PREF_LEARN_TOUCH_POSITIONS, Defaults.PREF_LEARN_TOUCH_POSITIONS);
+        mCrispHaptics = prefs.getBoolean(Settings.PREF_CRISP_HAPTICS, Defaults.PREF_CRISP_HAPTICS);
         mVibrateOn = Settings.readVibrationEnabled(prefs);
         mVibrateInDndMode = prefs.getBoolean(Settings.PREF_VIBRATE_IN_DND_MODE, Defaults.PREF_VIBRATE_IN_DND_MODE);
         mSoundOn = prefs.getBoolean(Settings.PREF_SOUND_ON, Defaults.PREF_SOUND_ON);

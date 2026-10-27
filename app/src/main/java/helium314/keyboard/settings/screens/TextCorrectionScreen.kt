@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import helium314.keyboard.keyboard.KeyboardSwitcher
+import helium314.keyboard.keyboard.TouchModel
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.permissions.PermissionsUtil
 import helium314.keyboard.latin.settings.Defaults
@@ -70,6 +71,7 @@ fun TextCorrectionScreen(
         if (autocorrectEnabled) Settings.PREF_BACKSPACE_REVERTS_AUTOCORRECT else null,
         Settings.PREF_AUTO_CAP,
         Settings.PREF_ADAPTIVE_HITBOXES,
+        Settings.PREF_LEARN_TOUCH_POSITIONS,
         R.string.settings_category_space,
         Settings.PREF_KEY_USE_DOUBLE_SPACE_PERIOD,
         Settings.PREF_AUTOSPACE_AFTER_PUNCTUATION,
@@ -165,6 +167,12 @@ fun createCorrectionSettings(context: Context) = listOf(
         R.string.adaptive_hitboxes, R.string.adaptive_hitboxes_summary
     ) {
         SwitchPreference(it, Defaults.PREF_ADAPTIVE_HITBOXES)
+    },
+    Setting(context, Settings.PREF_LEARN_TOUCH_POSITIONS,
+        R.string.learn_touch_positions, R.string.learn_touch_positions_summary
+    ) { setting ->
+        val prefs = LocalContext.current.prefs()
+        SwitchPreference(setting, Defaults.PREF_LEARN_TOUCH_POSITIONS) { if (!it) TouchModel.reset(prefs) }
     },
     Setting(context, Settings.PREF_KEY_USE_DOUBLE_SPACE_PERIOD,
         R.string.use_double_space_period, R.string.use_double_space_period_summary
