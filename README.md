@@ -93,7 +93,7 @@ beBoard (as a fork of HeliBoard, which is a fork of OpenBoard) is licensed under
 See repo's [LICENSE](/LICENSE) file.
 
 Since the app is based on Apache 2.0 licensed AOSP Keyboard, an [Apache 2.0](LICENSE-Apache-2.0) license file is provided.
-The icon is licensed under [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). A [license file](LICENSE-CC-BY-SA-4.0) is also included.
+The icons (in [art](art)) are licensed under [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). A [license file](LICENSE-CC-BY-SA-4.0) is also included.
 
 # Credits
 beBoard would not exist without [HeliBoard](https://github.com/HeliBorg/HeliBoard) and all of its [contributors](https://github.com/HeliBorg/HeliBoard/graphs/contributors). Nearly all of the code in this app comes from HeliBoard. HeliBoard's development is funded through the [NGI Mobifree Fund](https://nlnet.nl/mobifree) by [NLnet](https://nlnet.nl), and by donations from its users.
@@ -106,4 +106,4 @@ HeliBoard itself builds on:
 - [Indic Keyboard](https://gitlab.com/indicproject/indic-keyboard)
 - [FlorisBoard](https://github.com/florisboard/florisboard/)
 
-Icon by [Fabian OvrWrt](https://github.com/FabianOvrWrt) with contributions from [The Eclectic Dyslexic](https://github.com/the-eclectic-dyslexic)
+HeliBoard's original icon (in [art/launcher_icon](art/launcher_icon)) is by [Fabian OvrWrt](https://github.com/FabianOvrWrt) with contributions from [The Eclectic Dyslexic](https://github.com/the-eclectic-dyslexic)
