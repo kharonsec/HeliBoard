@@ -23,6 +23,12 @@ public final class PopupKeysDetector extends KeyDetector {
     }
 
     @Override
+    public Key detectHitKey(final int x, final int y, final AdaptiveHitboxes.HitKeyBias bias) {
+        // no adaptive hitboxes for popup keys
+        return detectHitKey(x, y);
+    }
+
+    @Override
     public Key detectHitKey(final int x, final int y) {
         final Keyboard keyboard = getKeyboard();
         if (keyboard == null) {

@@ -24,7 +24,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21' # Robolectric needs Java 21 for SDK 35+
           distribution: 'temurin'
 
       - uses: gradle/actions/setup-gradle@v3
@@ -33,7 +33,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew testRunTestsUnitTest
+        # AGP 9 only creates unit test tasks for the tested build type by default
+        run: ./gradlew testRunTestsUnitTest -Pandroid.onlyEnableUnitTestForTheTestedBuildType=false
+
+      - name: Show output of failed tests
+        run: grep -rh -e "<failure message" -e "error checking" app/build/test-results || true
+        if: ${{ failure() }}
 
       - name: Archive reports for failed job
         uses: actions/upload-artifact@v4

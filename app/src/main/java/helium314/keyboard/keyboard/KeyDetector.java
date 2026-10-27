@@ -103,4 +103,23 @@ public class KeyDetector {
         }
         return primaryKey;
     }
+
+    /**
+     * Detect the key for a touch point, allowing likely next letters to take over touches close to
+     * their hitbox (see {@link AdaptiveHitboxes}).
+     *
+     * @param x The x-coordinate of a touch point
+     * @param y The y-coordinate of a touch point
+     * @param bias likelihoods of next letters, may be null
+     * @return the key that the touch point hits.
+     */
+    public Key detectHitKey(final int x, final int y, final AdaptiveHitboxes.HitKeyBias bias) {
+        final Key primaryKey = detectHitKey(x, y);
+        if (bias == null || primaryKey == null || !mKeyboard.mId.getElement().isAlphabet()) {
+            return primaryKey;
+        }
+        final int touchX = getTouchX(x);
+        final int touchY = getTouchY(y);
+        return bias.adjust(primaryKey, touchX, touchY, mKeyboard.getNearestKeys(touchX, touchY));
+    }
 }
