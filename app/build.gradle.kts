@@ -22,8 +22,21 @@ android {
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
 
+    signingConfigs {
+        // release key for the release workflow, provided through GitHub secrets
+        System.getenv("BEBOARD_KEYSTORE_FILE")?.let { keystore ->
+            create("release") {
+                storeFile = file(keystore)
+                storePassword = System.getenv("BEBOARD_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("BEBOARD_KEY_ALIAS")
+                keyPassword = System.getenv("BEBOARD_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = true
             isShrinkResources = false
             isDebuggable = false
