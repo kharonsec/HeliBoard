@@ -3,6 +3,9 @@ name: Build debug APK
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
 
@@ -30,6 +33,18 @@ jobs:
         with:
           name: beBoard-debug
           path: app/build/outputs/apk/debug/*-debug*.apk
+
+      # rolling "test-build" pre-release, so the APK can be downloaded without logging in (e.g. from the GitHub app)
+      # the debug build has its own app ID, so it doesn't conflict with real releases
+      - name: Publish test build
+        if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete test-build --cleanup-tag --yes || true
+          gh release create test-build app/build/outputs/apk/debug/*-debug*.apk \
+            --prerelease --target "$GITHUB_SHA" --title "Test build" \
+            --notes "Latest debug build of main ($GITHUB_SHA). Installs next to the regular app. Updating may require uninstalling the previous test build first."
 
       - name: Archive reports for failed job
         uses: actions/upload-artifact@v4
