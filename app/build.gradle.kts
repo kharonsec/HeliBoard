@@ -55,6 +55,14 @@ android {
             isJniDebuggable = false
             applicationIdSuffix = ".debug"
         }
+        create("beta") { // optimized like release, but installs next to it and is signed with the debug key, for test builds
+            isMinifyEnabled = true
+            isShrinkResources = false
+            isDebuggable = false
+            isJniDebuggable = false
+            signingConfig = signingConfigs.getByName("debug")
+            applicationIdSuffix = ".beta"
+        }
         create("runTests") { // build variant for running tests on CI that skips tests known to fail
             isMinifyEnabled = false
             isJniDebuggable = false
