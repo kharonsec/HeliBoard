@@ -82,7 +82,7 @@ See [Contribution Guidelines](CONTRIBUTING.md)
 * [Layout documentation](layouts.md) (technical info regarding layout customization)
 * [Dictionaries](https://codeberg.org/Helium314/aosp-dictionaries), and [how to create your own](https://codeberg.org/Helium314/aosp-dictionaries#wordlist-information)
 * [HeliBoard wiki](https://github.com/HeliBorg/HeliBoard/wiki), including FAQ and help on customizing layouts
-* [Roccobot's Layout Maker](https://roccobot.github.io/HeliBoard-RLM/), a browser-based editor for json layout files
+* [Roccobot's Layout Maker](https://github.com/HeliBorg/HeliBoard/discussions/2494), a browser-based editor for json layout files
 
 # License
 
