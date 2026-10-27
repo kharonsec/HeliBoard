@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- beBoard launcher icon, source: art/beboard_icon.svg -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <path android:pathData="M42,32H66A9,9 0 0 1 75,41V65A9,9 0 0 1 66,74H42A9,9 0 0 1 33,65V41A9,9 0 0 1 42,32Z" android:strokeColor="#FFFFFFFF" android:strokeWidth="4" android:fillColor="#00000000"/>
+  <path android:pathData="M44.75,36H44.75A3.75,3.75 0 0 1 48.5,39.75V65.25A3.75,3.75 0 0 1 44.75,69H44.75A3.75,3.75 0 0 1 41,65.25V39.75A3.75,3.75 0 0 1 44.75,36ZM45.5,58.5A11,11 0 1 1 67.5,58.5A11,11 0 1 1 45.5,58.5ZM51.75,58.5A4.75,4.75 0 1 0 61.25,58.5A4.75,4.75 0 1 0 51.75,58.5Z" android:fillColor="#FFFFFFFF"/>
+</vector>
