@@ -37,7 +37,7 @@ jobs:
         run: ./gradlew testRunTestsUnitTest -Pandroid.onlyEnableUnitTestForTheTestedBuildType=false
 
       - name: Show output of failed tests
-        run: grep -rh -B2 -A20 "<failure" app/build/test-results || true
+        run: grep -rh -e "<failure message" -e "error checking" app/build/test-results || true
         if: ${{ failure() }}
 
       - name: Archive reports for failed job
