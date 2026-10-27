@@ -1,4 +1,4 @@
-HeliBoard is a privacy-conscious open-source keyboard, based on AOSP / OpenBoard.
+beBoard is a privacy-conscious open-source keyboard, based on AOSP / OpenBoard.
 Does not use Internet permission, and thus is 100% offline.
 
 Features:
