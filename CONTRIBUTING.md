@@ -5,7 +5,7 @@ Will re-open probably in (late) October or November.
 
 # Getting Started
 
-beBoard project is based on Gradle and Android Gradle Plugin. To get started, you can install [Android Studio](https://developer.android.com/studio), and import project 'from Version Control / Git / Github' by providing this git repository [URL](https://github.com/kharonsec/HeliBoard) (or git SSH [URL](git@github.com:kharonsec/HeliBoard.git)).
+beBoard project is based on Gradle and Android Gradle Plugin. To get started, you can install [Android Studio](https://developer.android.com/studio), and import project 'from Version Control / Git / Github' by providing this git repository [URL](https://github.com/kharonsec/beBoard) (or git SSH [URL](git@github.com:kharonsec/beBoard.git)).
 Of course you can also use any other compatible IDE, or work with text editor and command line.
 Once everything is up correctly, you're ready to go!
 
