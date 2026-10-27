@@ -57,6 +57,7 @@ public class SettingsValues {
     public final int mDisplayOrientation;
     // From preferences
     public final boolean mAutoCap;
+    public final boolean mAdaptiveHitboxes;
     public final boolean mVibrateOn;
     public final boolean mVibrateInDndMode;
     public final boolean mSoundOn;
@@ -191,6 +192,7 @@ public class SettingsValues {
         mToolbarSwipeDownToHide = prefs.getBoolean(Settings.PREF_TOOLBAR_SWIPE_DOWN_TO_HIDE, Defaults.PREF_TOOLBAR_SWIPE_DOWN_TO_HIDE);
         mToolbarHidingGlobal = mIsLocked || prefs.getBoolean(Settings.PREF_TOOLBAR_HIDING_GLOBAL, Defaults.PREF_TOOLBAR_HIDING_GLOBAL);
         mAutoCap = prefs.getBoolean(Settings.PREF_AUTO_CAP, Defaults.PREF_AUTO_CAP) && ScriptUtils.scriptSupportsUppercase(mLocale);
+        mAdaptiveHitboxes = prefs.getBoolean(Settings.PREF_ADAPTIVE_HITBOXES, Defaults.PREF_ADAPTIVE_HITBOXES);
         mVibrateOn = Settings.readVibrationEnabled(prefs);
         mVibrateInDndMode = prefs.getBoolean(Settings.PREF_VIBRATE_IN_DND_MODE, Defaults.PREF_VIBRATE_IN_DND_MODE);
         mSoundOn = prefs.getBoolean(Settings.PREF_SOUND_ON, Defaults.PREF_SOUND_ON);

@@ -118,6 +118,9 @@ public final class PointerTracker implements PointerTrackerQueue.Element,
     // The {@link KeyDetector} is set whenever the down event is processed. Also this is updated
     // when new {@link Keyboard} is set by {@link #setKeyDetector(KeyDetector)}.
     private KeyDetector mKeyDetector = new KeyDetector();
+    // likelihoods of next letters, taken on down event and used for this pointer until the next down event
+    @Nullable
+    private AdaptiveHitboxes.HitKeyBias mHitKeyBias;
     private Keyboard mKeyboard;
     private final BogusMoveEventDetector mBogusMoveEventDetector = new BogusMoveEventDetector();
 
@@ -525,7 +528,7 @@ public final class PointerTracker implements PointerTrackerQueue.Element,
         mBogusMoveEventDetector.onMoveKey(getDistance(x, y, mLastX, mLastY));
         mLastX = x;
         mLastY = y;
-        return mKeyDetector.detectHitKey(x, y);
+        return mKeyDetector.detectHitKey(x, y, mHitKeyBias);
     }
 
     private Key onMoveKey(final int x, final int y) {
@@ -651,6 +654,7 @@ public final class PointerTracker implements PointerTrackerQueue.Element,
         if (DEBUG_EVENT) {
             printTouchEvent("onDownEvent:", x, y, eventTime);
         }
+        mHitKeyBias = null;
         // Naive up-to-down noise filter.
         final long deltaT = eventTime - mUpTime;
         if (deltaT < sParams.mTouchNoiseThresholdTime) {
@@ -665,7 +669,14 @@ public final class PointerTracker implements PointerTrackerQueue.Element,
             }
         }
 
-        final Key key = getKeyOn(x, y);
+        mHitKeyBias = AdaptiveHitboxes.peek();
+        final Key key = mKeyDetector.detectHitKey(x, y, mHitKeyBias);
+        if (key != null && AdaptiveHitboxes.isLetterKey(key)) {
+            // the likelihoods are only valid for one letter, the next one needs new suggestions
+            AdaptiveHitboxes.clear();
+        } else {
+            mHitKeyBias = null;
+        }
         mBogusMoveEventDetector.onActualDownEvent(x, y);
         if (key != null && key.isModifier()) {
             if (sInGesture) {

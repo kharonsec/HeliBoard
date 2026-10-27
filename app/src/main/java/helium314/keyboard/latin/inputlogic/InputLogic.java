@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import helium314.keyboard.compat.AppWorkarounds;
 import helium314.keyboard.event.Event;
 import helium314.keyboard.event.InputTransaction;
+import helium314.keyboard.keyboard.AdaptiveHitboxes;
 import helium314.keyboard.keyboard.Keyboard;
 import helium314.keyboard.keyboard.KeyboardElement;
 import helium314.keyboard.keyboard.KeyboardLayoutSet;
@@ -158,6 +159,7 @@ public final class InputLogic {
      */
     public void startInput(String combiningSpec, SettingsValues settingsValues) {
         mConnection.onStartInput();
+        AdaptiveHitboxes.clear();
         if (!mWordComposer.getTypedWord().isEmpty()) {
             // For messaging apps that offer send button, the IME does not get the opportunity
             // to capture the last word. This block should capture those uncommitted words.
@@ -218,6 +220,7 @@ public final class InputLogic {
         resetComposingState(true);
         mInputLogicHandler.reset();
         mSpaceState = SpaceState.NONE;
+        AdaptiveHitboxes.clear();
     }
 
     /**
@@ -231,6 +234,7 @@ public final class InputLogic {
      * @return the complete transaction object
      */
     public InputTransaction onTextInput(SettingsValues settingsValues, Event event, CapsMode keyboardCapsMode, LatinIME.UIHandler handler) {
+        AdaptiveHitboxes.clear();
         String rawText = event.getTextToCommit().toString();
         InputTransaction inputTransaction = new InputTransaction(settingsValues, event,
                 SystemClock.uptimeMillis(), mSpaceState,
@@ -280,6 +284,7 @@ public final class InputLogic {
     // interface
     public InputTransaction onPickSuggestionManually(SettingsValues settingsValues, SuggestedWordInfo suggestionInfo,
             CapsMode keyboardCapsMode, LatinIME.UIHandler handler) {
+        AdaptiveHitboxes.clear();
         if (isInlineEmojiSearchAction()) {
             deleteTextReplacedByEmoji();
         }
@@ -475,6 +480,10 @@ public final class InputLogic {
     public InputTransaction onCodeInput(SettingsValues settingsValues, @NonNull Event event,
             CapsMode keyboardCapsMode, LatinIME.UIHandler handler) {
         mJustRevertedACommit = false;
+        if (event.getKeyCode() != KeyCode.SHIFT && event.getKeyCode() != KeyCode.CAPS_LOCK
+                && event.getKeyCode() != KeyCode.SYMBOL_ALPHA && event.getKeyCode() != KeyCode.ALPHA
+                && event.getKeyCode() != KeyCode.SYMBOL)
+            AdaptiveHitboxes.clear(); // text changes, so next letter likelihoods are outdated
 
         if (GestureDataGatheringKt.useBackgroundGathering && mConnection.hasSelection())
             BackgroundGatheringCache.INSTANCE.onEditSelection(mConnection.getSelectedText(0), mConnection.getTextBeforeCursor(40, 0), mConnection.getTextAfterCursor(40, 0));
@@ -524,6 +533,7 @@ public final class InputLogic {
     }
 
     public void onStartBatchInput(SettingsValues settingsValues, KeyboardSwitcher keyboardSwitcher, LatinIME.UIHandler handler) {
+        AdaptiveHitboxes.clear();
         mInputLogicHandler.onStartBatchInput();
         handler.showGesturePreviewAndSetSuggestions(SuggestedWords.getEmptyBatchInstance(), false);
         handler.cancelUpdateSuggestionStrip();
@@ -633,6 +643,7 @@ public final class InputLogic {
             mWordComposer.setAutoCorrection(suggestedWordInfo);
         }
         mSuggestedWords = suggestedWords;
+        AdaptiveHitboxes.onSuggestionsUpdated(mWordComposer.getTypedWord(), suggestedWords);
         final boolean newAutoCorrectionIndicator = suggestedWords.mWillAutoCorrect;
 
         // Put a blue underline to a word in TextView which will be auto-corrected.
