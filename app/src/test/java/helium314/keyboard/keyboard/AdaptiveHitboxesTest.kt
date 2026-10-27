@@ -6,8 +6,10 @@ import helium314.keyboard.latin.SuggestedWords.SuggestedWordInfo
 import helium314.keyboard.latin.dictionary.Dictionary
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import kotlin.math.ln
 import kotlin.test.AfterTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertSame
@@ -66,6 +68,22 @@ class AdaptiveHitboxesTest {
     @Test fun capitalizationIsIgnored() {
         val bias = biasFor("Wa", "was", "Wash")
         assertSame(keyS, bias.adjust(letterKey('A', 0), 95, 75, keys))
+    }
+
+    @Test fun typingSpeedChangesStrength() {
+        val logProbabilities = mapOf('s'.code to ln(0.65f))
+        val slow = AdaptiveHitboxes.HitKeyBias(logProbabilities, null, AdaptiveHitboxes.strengthForInterval(1000))
+        val fast = AdaptiveHitboxes.HitKeyBias(logProbabilities, null, AdaptiveHitboxes.strengthForInterval(100))
+        assertSame(keyA, slow.adjust(keyA, 85, 75, keys))
+        assertSame(keyS, fast.adjust(keyA, 85, 75, keys))
+        // very close to the edge, even slow typing is adjusted
+        assertSame(keyS, slow.adjust(keyA, 97, 75, keys))
+    }
+
+    @Test fun strengthDependsOnInterval() {
+        assertEquals(1.25f, AdaptiveHitboxes.strengthForInterval(100), 0.001f)
+        assertEquals(0.5f, AdaptiveHitboxes.strengthForInterval(1000), 0.001f)
+        assertEquals(0.875f, AdaptiveHitboxes.strengthForInterval(440), 0.001f)
     }
 
     private fun biasFor(typedWord: String, vararg words: String): AdaptiveHitboxes.HitKeyBias {

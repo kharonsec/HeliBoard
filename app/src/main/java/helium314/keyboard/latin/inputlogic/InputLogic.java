@@ -29,6 +29,7 @@ import helium314.keyboard.compat.AppWorkarounds;
 import helium314.keyboard.event.Event;
 import helium314.keyboard.event.InputTransaction;
 import helium314.keyboard.keyboard.AdaptiveHitboxes;
+import helium314.keyboard.keyboard.TouchModel;
 import helium314.keyboard.keyboard.Keyboard;
 import helium314.keyboard.keyboard.KeyboardElement;
 import helium314.keyboard.keyboard.KeyboardLayoutSet;
@@ -64,6 +65,7 @@ import helium314.keyboard.latin.utils.AsyncResultHolder;
 import helium314.keyboard.latin.utils.GestureDataGatheringKt;
 import helium314.keyboard.latin.utils.InputTypeUtils;
 import helium314.keyboard.latin.utils.IntentUtils;
+import helium314.keyboard.latin.utils.KtxKt;
 import helium314.keyboard.latin.utils.Log;
 import helium314.keyboard.latin.utils.BackgroundGatheringCache;
 import helium314.keyboard.latin.utils.RecapitalizeMode;
@@ -160,6 +162,7 @@ public final class InputLogic {
     public void startInput(String combiningSpec, SettingsValues settingsValues) {
         mConnection.onStartInput();
         AdaptiveHitboxes.clear();
+        TouchModel.load(KtxKt.prefs(mLatinIME));
         if (!mWordComposer.getTypedWord().isEmpty()) {
             // For messaging apps that offer send button, the IME does not get the opportunity
             // to capture the last word. This block should capture those uncommitted words.
@@ -221,6 +224,7 @@ public final class InputLogic {
         mInputLogicHandler.reset();
         mSpaceState = SpaceState.NONE;
         AdaptiveHitboxes.clear();
+        TouchModel.save(KtxKt.prefs(mLatinIME));
     }
 
     /**
@@ -1891,6 +1895,7 @@ public final class InputLogic {
      * @param inputTransaction The transaction in progress.
      */
     private void revertCommit(final InputTransaction inputTransaction) {
+        TouchModel.discardPendingSamples();
         final CharSequence originallyTypedWord = mLastComposedWord.mTypedWord;
         final CharSequence committedWord = mLastComposedWord.mCommittedWord;
         final String committedWordString = committedWord.toString();
@@ -2424,6 +2429,12 @@ public final class InputLogic {
             Log.d(TAG, "commitChosenWord() : " + runTimeMillis + " ms to run "
                     + "performAdditionToUserHistoryDictionary()");
             startTimeMillis = SystemClock.elapsedRealtime();
+        }
+        if (settingsValues.mLearnTouchPositions && !mWordComposer.isBatchMode()) {
+            final InputPointers pointers = mWordComposer.getInputPointers();
+            TouchModel.onWordCommitted(chosenWord, mWordComposer.getTypedWord(), pointers.getXCoordinates(),
+                    pointers.getYCoordinates(), pointers.getPointerSize(), KeyboardSwitcher.getInstance().getKeyboard(),
+                    settingsValues.mDisplayOrientation, KtxKt.prefs(mLatinIME));
         }
         // TODO: figure out here if this is an auto-correct or if the best word is actually
         // what user typed. Note: currently this is done much later in

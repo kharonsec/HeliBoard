@@ -669,7 +669,7 @@ public final class PointerTracker implements PointerTrackerQueue.Element,
             }
         }
 
-        mHitKeyBias = AdaptiveHitboxes.peek();
+        mHitKeyBias = AdaptiveHitboxes.peek(eventTime);
         final Key key = mKeyDetector.detectHitKey(x, y, mHitKeyBias);
         if (key != null && AdaptiveHitboxes.isLetterKey(key)) {
             // the likelihoods are only valid for one letter, the next one needs new suggestions

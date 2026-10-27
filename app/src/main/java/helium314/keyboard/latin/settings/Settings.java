@@ -71,6 +71,8 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
 
     public static final String PREF_AUTO_CAP = "auto_cap";
     public static final String PREF_ADAPTIVE_HITBOXES = "adaptive_hitboxes";
+    public static final String PREF_LEARN_TOUCH_POSITIONS = "learn_touch_positions";
+    public static final String PREF_CRISP_HAPTICS = "crisp_haptics";
     public static final String PREF_VIBRATE_ON = "vibrate_on";
     public static final String PREF_VIBRATE_IN_DND_MODE = "vibrate_in_dnd_mode";
     public static final String PREF_SOUND_ON = "sound_on";

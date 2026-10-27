@@ -8,6 +8,8 @@ package helium314.keyboard.latin;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Build;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
@@ -26,6 +28,10 @@ import helium314.keyboard.latin.settings.SettingsValues;
 public final class AudioAndHapticFeedbackManager {
     private AudioManager mAudioManager;
     private Vibrator mVibrator;
+    // crisp vibration effects, null if not supported by the device
+    private VibrationEffect mCrispKeyEffect;
+    private VibrationEffect mCrispSpecialKeyEffect;
+    private VibrationEffect mCrispRepeatEffect;
 
     private SettingsValues mSettingsValues;
     private boolean mSoundOn;
@@ -49,6 +55,31 @@ public final class AudioAndHapticFeedbackManager {
     private void initInternal(final Context context) {
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        initCrispEffects();
+    }
+
+    private void initCrispEffects() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R || !hasVibrator()) {
+            return;
+        }
+        if (mVibrator.areAllPrimitivesSupported(VibrationEffect.Composition.PRIMITIVE_CLICK,
+                VibrationEffect.Composition.PRIMITIVE_TICK)) {
+            mCrispKeyEffect = VibrationEffect.startComposition()
+                    .addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.6f).compose();
+            mCrispSpecialKeyEffect = VibrationEffect.startComposition()
+                    .addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.9f).compose();
+            mCrispRepeatEffect = VibrationEffect.startComposition()
+                    .addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.5f).compose();
+        } else if (mVibrator.areAllEffectsSupported(VibrationEffect.EFFECT_CLICK, VibrationEffect.EFFECT_HEAVY_CLICK,
+                VibrationEffect.EFFECT_TICK) == Vibrator.VIBRATION_EFFECT_SUPPORT_YES) {
+            mCrispKeyEffect = VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK);
+            mCrispSpecialKeyEffect = VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK);
+            mCrispRepeatEffect = VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK);
+        }
+    }
+
+    public boolean supportsCrispHaptics() {
+        return mCrispKeyEffect != null;
     }
 
     public void performHapticAndAudioFeedback(
@@ -56,7 +87,7 @@ public final class AudioAndHapticFeedbackManager {
         final View viewToPerformHapticFeedbackOn,
         final HapticEvent hapticEvent
     ) {
-        performHapticFeedback(viewToPerformHapticFeedbackOn, hapticEvent);
+        performHapticFeedback(viewToPerformHapticFeedbackOn, hapticEvent, code);
         performAudioFeedback(code, hapticEvent);
     }
 
@@ -99,6 +130,10 @@ public final class AudioAndHapticFeedbackManager {
     }
 
     public void performHapticFeedback(final View viewToPerformHapticFeedbackOn, final HapticEvent hapticEvent) {
+        performHapticFeedback(viewToPerformHapticFeedbackOn, hapticEvent, KeyCode.NOT_SPECIFIED);
+    }
+
+    public void performHapticFeedback(final View viewToPerformHapticFeedbackOn, final HapticEvent hapticEvent, final int code) {
         if (!mSettingsValues.mVibrateOn || (mDoNotDisturb && !mSettingsValues.mVibrateInDndMode)) {
             return;
         }
@@ -110,12 +145,33 @@ public final class AudioAndHapticFeedbackManager {
             vibrate(mSettingsValues.mKeypressVibrationDuration);
             return;
         }
+        if (mSettingsValues.mCrispHaptics && performCrispHapticFeedback(hapticEvent, code)) {
+            return;
+        }
         // Go ahead with the system default
         if (viewToPerformHapticFeedbackOn != null) {
             viewToPerformHapticFeedbackOn.performHapticFeedback(
                     hapticEvent.feedbackConstant,
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
         }
+    }
+
+    private boolean performCrispHapticFeedback(final HapticEvent hapticEvent, final int code) {
+        if (mCrispKeyEffect == null) {
+            return false;
+        }
+        final VibrationEffect effect;
+        if (hapticEvent == HapticEvent.KEY_PRESS) {
+            final boolean isSpecialKey = code == Constants.CODE_SPACE || code == Constants.CODE_ENTER
+                    || code == KeyCode.DELETE;
+            effect = isSpecialKey ? mCrispSpecialKeyEffect : mCrispKeyEffect;
+        } else if (hapticEvent == HapticEvent.KEY_REPEAT) {
+            effect = mCrispRepeatEffect;
+        } else {
+            return false;
+        }
+        mVibrator.vibrate(effect);
+        return true;
     }
 
     public void onSettingsChanged(final SettingsValues settingsValues) {

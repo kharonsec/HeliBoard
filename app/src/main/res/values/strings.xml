@@ -18,6 +18,10 @@
     <string name="vibrate_on_keypress">Vibrate on keypress</string>
     <!-- Option to provide vibrate/haptic feedback on keypress even in do not disturb mode -->
     <string name="vibrate_in_dnd_mode">Vibrate in do not disturb mode</string>
+    <!-- Option to use short and sharp vibration effects -->
+    <string name="crisp_haptics">Crisp vibration</string>
+    <!-- Description for option to use short and sharp vibration effects -->
+    <string name="crisp_haptics_summary">Use short, sharp vibration effects if the phone supports them</string>
     <!-- Option to play back sound on keypress in soft keyboard -->
     <string name="sound_on_keypress">Sound on keypress</string>
     <!-- Option to suggest emojis -->
@@ -118,6 +122,10 @@
     <string name="adaptive_hitboxes">Adaptive key touch areas</string>
     <!-- Description for option to enable adaptive key hitboxes -->
     <string name="adaptive_hitboxes_summary">Slightly enlarge the invisible touch area of letters that are likely to come next</string>
+    <!-- Option to learn where the user touches keys -->
+    <string name="learn_touch_positions">Learn my touch positions</string>
+    <!-- Description for option to learn where the user touches keys -->
+    <string name="learn_touch_positions_summary">Adapt the keys to where you actually tap them. Data stays on this device, turning this off deletes it</string>
     <!-- Option to edit personal dictionary.-->
     <string name="edit_personal_dictionary">Personal dictionary</string>
     <!-- Name of the main dictionary, as opposed to auxiliary dictionaries (medical/entertainment/sports...) -->
