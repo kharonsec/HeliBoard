@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 package helium314.keyboard.settings.preferences
 
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,6 +22,7 @@ import helium314.keyboard.settings.SettingsActivity
 import helium314.keyboard.settings.dialogs.InfoDialog
 import androidx.core.content.edit
 import helium314.keyboard.latin.dictionary.DictionaryInfoUtils
+import helium314.keyboard.settings.SettingsSwitch
 
 @Composable
 fun SwitchPreference(
@@ -72,7 +72,7 @@ fun SwitchPreference(
         modifier = modifier,
         description = description
     ) {
-        Switch(
+        SettingsSwitch(
             checked = value,
             onCheckedChange = { switched(it) },
         )

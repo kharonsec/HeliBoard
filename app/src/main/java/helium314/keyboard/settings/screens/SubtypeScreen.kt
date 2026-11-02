@@ -13,13 +13,11 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -87,6 +85,7 @@ import helium314.keyboard.settings.layoutFilePicker
 import helium314.keyboard.settings.layoutIntent
 import helium314.keyboard.settings.GetIconOrEmpty
 import java.util.Locale
+import helium314.keyboard.settings.SettingsSwitch
 
 @Composable
 fun SubtypeScreen(
@@ -146,13 +145,13 @@ fun SubtypeScreen(
             contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
         ) { innerPadding ->
             Column(
-                modifier = Modifier.verticalScroll(scrollState).padding(horizontal = 12.dp)
+                modifier = Modifier.verticalScroll(scrollState).padding(horizontal = 16.dp)
                     .then(Modifier.padding(innerPadding)),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 MainLayoutRow(currentSubtype, customMainLayouts) { setCurrentSubtype(it) }
                 if (availableLocalesForScript.size > 1) {
-                    WithSmallTitle(stringResource(R.string.secondary_locale)) {
+                    WithSmallTitle(card = true, description = stringResource(R.string.secondary_locale)) {
                         ActionRow(onClick = { showSecondaryLocaleDialog = true }) {
                             val text = getSecondaryLocales(currentSubtype.extraValues).joinToString(", ") {
                                 it.localizedDisplayName(ctx.resources)
@@ -164,7 +163,7 @@ fun SubtypeScreen(
                         }
                     }
                 }
-                WithSmallTitle(stringResource(R.string.popup_order_and_hint_source)) {
+                WithSmallTitle(card = true, description = stringResource(R.string.popup_order_and_hint_source)) {
                     ActionRow(onClick = { showKeyOrderDialog = true }) {
                         Text(stringResource(R.string.popup_order),
                             modifier = Modifier
@@ -187,7 +186,7 @@ fun SubtypeScreen(
                     }
                 }
                 if (currentSubtype.locale.script() == ScriptUtils.SCRIPT_LATIN) {
-                    WithSmallTitle(stringResource(R.string.show_popup_keys_title)) {
+                    WithSmallTitle(card = true, description = stringResource(R.string.show_popup_keys_title)) {
                         val explicitValue = currentSubtype.getExtraValueOf(ExtraValue.MORE_POPUPS)
                         val value = explicitValue ?: prefs.getString(
                             Settings.PREF_MORE_POPUP_KEYS,
@@ -207,14 +206,14 @@ fun SubtypeScreen(
                 }
                 if (LocaleKeyboardInfos.hasLocalizedNumberRow(currentSubtype.locale, ctx)) {
                     val checked = currentSubtype.getExtraValueOf(ExtraValue.LOCALIZED_NUMBER_ROW)?.toBoolean()
-                    WithSmallTitle(stringResource(R.string.number_row)) {
+                    WithSmallTitle(card = true, description = stringResource(R.string.number_row)) {
                         ActionRow {
                             Text(stringResource(R.string.localized_number_row),
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(start = 10.dp)
                             )
-                            Switch(
+                            SettingsSwitch(
                                 checked = checked ?: prefs.getBoolean(
                                     Settings.PREF_LOCALIZED_NUMBER_ROW,
                                     Defaults.PREF_LOCALIZED_NUMBER_ROW
@@ -229,14 +228,14 @@ fun SubtypeScreen(
                         }
                     }
                 }
-                HorizontalDivider()
                 Text(
                     stringResource(R.string.settings_screen_secondary_layouts),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(start = 4.dp, top = 20.dp)
                 )
                 LayoutType.entries.forEach { type ->
                     if (type == LayoutType.MAIN) return@forEach
-                    WithSmallTitle(stringResource(type.displayNameId)) {
+                    WithSmallTitle(card = true, description = stringResource(type.displayNameId)) {
                         val explicitLayout = currentSubtype.layoutName(type)
                         val layout = explicitLayout ?: Settings.readDefaultLayoutName(type, prefs)
                         val defaultLayouts = LayoutUtils.getAvailableLayouts(type, ctx)
@@ -384,7 +383,7 @@ private fun PopupOrderDialog(
                 KeyboardIconsSet.instance.GetIconOrEmpty(item.name)
                 val text = item.name.lowercase().getStringResourceOrName("popup_keys_", ctx)
                 Text(text, Modifier.weight(1f))
-                Switch(
+                SettingsSwitch(
                     checked = checked,
                     onCheckedChange = { item.state = it; checked = it }
                 )
@@ -401,7 +400,7 @@ private fun MainLayoutRow(
     setCurrentSubtype: (SettingsSubtype) -> Unit,
 ) {
     val ctx = LocalContext.current
-    WithSmallTitle(stringResource(R.string.keyboard_layout_set)) {
+    WithSmallTitle(card = true, description = stringResource(R.string.keyboard_layout_set)) {
         val appLayouts = LayoutUtils.getAvailableLayouts(LayoutType.MAIN, ctx, currentSubtype.locale)
         var showAddLayoutDialog by remember { mutableStateOf(false) }
         var showLayoutEditDialog: Pair<String, String?>? by remember { mutableStateOf(null) }

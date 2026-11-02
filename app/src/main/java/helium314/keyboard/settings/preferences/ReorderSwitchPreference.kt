@@ -2,7 +2,6 @@
 package helium314.keyboard.settings.preferences
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,6 +22,7 @@ import helium314.keyboard.latin.utils.prefs
 import helium314.keyboard.settings.Setting
 import helium314.keyboard.settings.dialogs.ReorderDialog
 import helium314.keyboard.settings.GetIconOrEmpty
+import helium314.keyboard.settings.SettingsSwitch
 
 @Composable
 fun ReorderSwitchPreference(setting: Setting, default: String) {
@@ -58,7 +58,7 @@ fun ReorderSwitchPreference(setting: Setting, default: String) {
                     val actualText = if (text != item.name.lowercase()) text
                         else item.name.lowercase().getStringResourceOrName("popup_keys_", ctx)
                     Text(actualText, Modifier.weight(1f))
-                    Switch(
+                    SettingsSwitch(
                         checked = checked,
                         onCheckedChange = { item.state = it; checked = it }
                     )
