@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -50,6 +49,7 @@ import helium314.keyboard.latin.utils.Theme
 import helium314.keyboard.settings.initPreview
 import helium314.keyboard.latin.utils.previewDark
 import java.util.Locale
+import helium314.keyboard.settings.SettingsSwitch
 
 @Composable
 fun LanguageScreen(
@@ -110,7 +110,7 @@ private fun SubtypeRow(subtype: InputMethodSubtype, isEnabled: Boolean) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
         }
-        Switch(
+        SettingsSwitch(
             checked = isEnabled,
             onCheckedChange = {
                 if (it && !dictsAvailable(subtype.locale(), ctx))

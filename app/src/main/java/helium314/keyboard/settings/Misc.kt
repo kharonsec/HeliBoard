@@ -8,6 +8,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,8 +48,23 @@ import helium314.keyboard.latin.utils.dpToPx
 @Composable
 fun WithSmallTitle(
     description: String,
+    card: Boolean = false, // show content in a rounded card, like settings groups
     content: @Composable () -> Unit,
 ) {
+    if (card) {
+        Column {
+            Text(
+                description.uppercase(),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 7.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Column(Modifier.fillMaxWidth().clip(GroupShape).background(groupColor).padding(horizontal = 6.dp, vertical = 4.dp)) {
+                content()
+            }
+        }
+        return
+    }
     Column {
         Text(description, style = MaterialTheme.typography.titleSmall)
         content()

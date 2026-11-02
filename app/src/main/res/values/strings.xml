@@ -50,6 +50,16 @@
     <string name="settings_screen_correction">Text correction</string>
     <!-- Settings screen title for advanced settings -->
     <string name="settings_screen_advanced">Advanced</string>
+    <!-- Short descriptions of the settings sections on the main settings screen -->
+    <string name="main_summary_preferences">Popups, number row, sound, vibration and clipboard</string>
+    <string name="main_summary_appearance">Theme, colors, keyboard size and fonts</string>
+    <string name="main_summary_toolbar">Buttons above the keyboard</string>
+    <string name="main_summary_correction">Autocorrect, suggestions and spacing</string>
+    <string name="main_summary_gesture">Options for swipe typing</string>
+    <string name="main_summary_gesture_data">Help build an open swipe typing library</string>
+    <string name="main_summary_secondary_layouts">Symbols, numbers and other layouts</string>
+    <string name="main_summary_dictionaries">Word lists used for suggestions</string>
+    <string name="main_summary_advanced">Swipe gestures, backup and expert options</string>
     <!-- Settings screen title for keyboard theme settings -->
     <string name="settings_screen_theme">Theme</string>
     <!-- Settings category title for Preference/Input settings -->

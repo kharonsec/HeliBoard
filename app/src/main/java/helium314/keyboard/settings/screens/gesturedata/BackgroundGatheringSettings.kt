@@ -29,7 +29,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -89,6 +88,7 @@ import helium314.keyboard.settings.dialogs.InfoDialog
 import helium314.keyboard.settings.painterResourceCompat
 import kotlinx.coroutines.Dispatchers
 import kotlin.text.split
+import helium314.keyboard.settings.SettingsSwitch
 
 // functionality for gesture data gathering as part of the NLNet Project https://nlnet.nl/project/GestureTyping/
 // will be removed once the project is finished
@@ -120,7 +120,7 @@ fun BackgroundGatheringSettings() {
             val allowedCountText = if (packageInfos.isEmpty()) "" else allowedCount.toString()
             Text(stringResource(R.string.gesture_data_background_gathering_allowed_apps, allowedCountText), style = MaterialTheme.typography.bodySmall)
         }
-        Switch(
+        SettingsSwitch(
             checked = backgroundGathering,
             onCheckedChange = {
                 if (!GestureDataGatheringSettings.hasBackgroundGatheringPref(ctx.prefs()))
@@ -147,7 +147,7 @@ fun BackgroundGatheringSettings() {
             Text(stringResource(R.string.gesture_data_background_gathering_manual_save))
             Text(stringResource(R.string.gesture_data_background_gathering_manual_save_summary), style = MaterialTheme.typography.bodySmall)
         }
-        Switch(backgroundGatheringManuelSave, { backgroundGatheringManuelSave = it; GestureDataGatheringSettings.setDiscardByDefault(ctx, it) })
+        SettingsSwitch(backgroundGatheringManuelSave, { backgroundGatheringManuelSave = it; GestureDataGatheringSettings.setDiscardByDefault(ctx, it) })
     }
     ButtonWithText(stringResource(R.string.gesture_data_background_gathering_info), Modifier.fillMaxWidth()) { showInfoDialog = true }
     ButtonWithText(stringResource(R.string.gesture_data_background_excluded_words_button), Modifier.fillMaxWidth()) { showExcludedWordsDialog = true }
@@ -246,7 +246,7 @@ fun BackgroundGatheringSettings() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(R.string.gesture_data_background_apps_include_default))
-                    Switch(checked = defaultInclude, onCheckedChange = { defaultInclude = it; GestureDataGatheringSettings.setAppIncludeByDefault(ctx, it) })
+                    SettingsSwitch(checked = defaultInclude, onCheckedChange = { defaultInclude = it; GestureDataGatheringSettings.setAppIncludeByDefault(ctx, it) })
                 }
                 TextField(
                     value = filter,

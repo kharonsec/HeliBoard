@@ -3,8 +3,10 @@ package helium314.keyboard.latin.utils
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,13 +18,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import helium314.keyboard.latin.R
 
 @Composable
 fun NextScreenIcon() {
+    // small, light chevron like in grouped lists
     Icon(
         painterResource(R.drawable.ic_arrow_left), null,
-        if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.scale(-1f, 1f) else Modifier
+        (if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.scale(-1f, 1f) else Modifier).size(20.dp),
+        tint = MaterialTheme.colorScheme.outline
     )
 }
 
@@ -68,8 +73,10 @@ fun ExpandButton(enabled: Boolean = true, onClick: () -> Unit) {
 fun BackButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(
-            painterResource(R.drawable.ic_arrow_back),
-            stringResource(R.string.spoken_description_action_previous)
+            painterResource(R.drawable.ic_arrow_left),
+            stringResource(R.string.spoken_description_action_previous),
+            (if (LocalLayoutDirection.current == LayoutDirection.Rtl) Modifier.scale(-1f, 1f) else Modifier).size(28.dp),
+            tint = MaterialTheme.colorScheme.primary
         )
     }
 }
